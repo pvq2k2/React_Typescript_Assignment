@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 // import './App.css'
 import { Routes, Route, NavLink } from "react-router-dom";
-import { add, list, remove } from './api/product';
+import { add, list, remove, update } from './api/product';
 import Dashboard from './pages/Dashboard';
 import AdminLayout from './pages/layouts/AdminLayout';
 import ProductManager from './pages/ProductManager';
 import { ProductType } from './types/product';
 import { Popconfirm, Modal, notification } from 'antd';
 import ProductAdd from './pages/ProductAdd';
+import ProductEdit from './pages/ProductEdit';
 function App() {
   const [products, setProducts] = useState<ProductType[]>([]);
   useEffect(() => {
@@ -44,6 +45,10 @@ function App() {
     setProducts([...products, data]);
     openNotification()
   }
+  const onHandleUpdate = async (product: ProductType) => {
+    const { data } = await update(product);
+    setProducts(products.map(item => item._id == data._id ? data : item));
+  }
   return (
     <div className="App">
       <Routes>
@@ -55,6 +60,7 @@ function App() {
           <Route path='products'>
             <Route index element={<ProductManager products={products} onRemove={removeItem}/>} />
             <Route path='add' element={<ProductAdd onAdd={onHandleAdd}/>} />
+            <Route path=':id/edit' element={<ProductEdit onAdd={onHandleAdd}/>} />
           </Route>
         </Route>
       </Routes>
