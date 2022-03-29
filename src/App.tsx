@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 // import './App.css'
 import { Routes, Route, NavLink } from "react-router-dom";
-import { list, remove } from './api/product';
+import { add, list, remove } from './api/product';
 import Dashboard from './pages/Dashboard';
 import AdminLayout from './pages/layouts/AdminLayout';
 import ProductManager from './pages/ProductManager';
 import { ProductType } from './types/product';
 import { Popconfirm, Modal, notification } from 'antd';
+import ProductAdd from './pages/ProductAdd';
 function App() {
   const [products, setProducts] = useState<ProductType[]>([]);
   useEffect(() => {
@@ -31,6 +32,18 @@ function App() {
       openNotification()
     }
   }
+  const onHandleAdd = async (product: ProductType) => {
+    const openNotification = () => {
+      notification.success({
+        message: `Thêm thành công !`,
+        // description:
+        //   'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+      });
+    };
+    const { data } = await add(product);
+    setProducts([...products, data]);
+    openNotification()
+  }
   return (
     <div className="App">
       <Routes>
@@ -41,6 +54,7 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path='products'>
             <Route index element={<ProductManager products={products} onRemove={removeItem}/>} />
+            <Route path='add' element={<ProductAdd onAdd={onHandleAdd}/>} />
           </Route>
         </Route>
       </Routes>
