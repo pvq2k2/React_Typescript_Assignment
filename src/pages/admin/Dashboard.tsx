@@ -1,6 +1,7 @@
 import React from 'react'
 import { Layout, Breadcrumb, Card, Col, Row, Statistic, Progress  } from 'antd';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 const { Countdown } = Statistic;
 const deadline = Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30; // Moment is also OK
 
@@ -20,7 +21,7 @@ const Dashboard = (props: Props) => {
   return (
     <Layout style={{ background: '#fff' }}>
     <Breadcrumb style={{ margin: '16px' }}>
-    <Breadcrumb.Item>Pages</Breadcrumb.Item>
+    <Breadcrumb.Item><Link to="/admin/dashboard">Pages</Link></Breadcrumb.Item>
     <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
   </Breadcrumb>
   <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
