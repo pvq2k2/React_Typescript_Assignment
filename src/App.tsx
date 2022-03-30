@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 // import './App.css'
 import { Routes, Route, NavLink } from "react-router-dom";
 import { add, list, remove, update } from './api/product';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/admin/Dashboard';
 import AdminLayout from './pages/layouts/AdminLayout';
-import ProductManager from './pages/ProductManager';
+import ProductManager from './pages/admin/products/ProductManager';
 import { ProductType } from './types/product';
 import { Popconfirm, Modal, notification } from 'antd';
-import ProductAdd from './pages/ProductAdd';
-import ProductEdit from './pages/ProductEdit';
+import ProductAdd from './pages/admin/products/ProductAdd';
+import ProductEdit from './pages/admin/products/ProductEdit';
 import Home from './pages/Home';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';

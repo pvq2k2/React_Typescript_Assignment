@@ -3,7 +3,7 @@ import { Layout, Breadcrumb } from 'antd'
 import { Form, Input, Button, Checkbox } from 'antd';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { read } from '../api/product';
+import { read } from '../../../api/product';
 
 type ProductEditProps = {
     onUpdate: (product: TypeInputs) => void
@@ -100,6 +100,7 @@ const ProductEdit = (props: ProductEditProps) => {
     </Form>            
     </div>
     </Layout>
+    
   )
 }
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Layout, Breadcrumb, Table, Button, Space, Modal } from 'antd';
-import { ProductType } from '../types/product';
+import { ProductType } from '../../../types/product';
 import { Link } from 'react-router-dom';
 
 type ProductManagerProps = {
