@@ -10,6 +10,7 @@ import { Popconfirm, Modal, notification } from 'antd';
 import ProductAdd from './pages/ProductAdd';
 import ProductEdit from './pages/ProductEdit';
 import Home from './pages/Home';
+import SignIn from './pages/SignIn';
 function App() {
   const [products, setProducts] = useState<ProductType[]>([]);
   useEffect(() => {
@@ -54,7 +55,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<h1>About Page</h1>} />
+        <Route path="/signin" element={<SignIn />} />
         <Route path="/admin" element={<AdminLayout/>}>
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
