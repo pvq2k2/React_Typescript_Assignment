@@ -37,16 +37,8 @@ function App() {
     }
   }
   const onHandleAdd = async (product: ProductType) => {
-    const openNotification = () => {
-      notification.success({
-        message: `Thêm thành công !`,
-        // description:
-        //   'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-      });
-    };
     const { data } = await add(product);
     setProducts([...products, data]);
-    openNotification()
   }
   const onHandleUpdate = async (product: ProductType) => {
     const { data } = await update(product);
@@ -64,7 +56,7 @@ function App() {
           <Route path='products'>
             <Route index element={<ProductManager products={products} onRemove={removeItem}/>} />
             <Route path='add' element={<ProductAdd onAdd={onHandleAdd}/>} />
-            <Route path=':id/edit' element={<ProductEdit onUpdate={onHandleAdd}/>} />
+            <Route path=':id/edit' element={<ProductEdit onUpdate={onHandleUpdate}/>} />
           </Route>
         </Route>
       </Routes>

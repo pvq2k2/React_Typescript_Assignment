@@ -1,32 +1,66 @@
-import React from 'react'
-import { Layout, Breadcrumb } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { Layout, Breadcrumb, notification } from 'antd'
 import { Form, Input, Button, Checkbox } from 'antd';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 type ProductAddProps = {
     onAdd: (product: TypeInputs) => void
 };
 type TypeInputs = {
     name: string,
-    price: number
+    price: number,
+    img: string
 }
   // const onFinish = (values: any) => {
   //   console.log('Success:', values);
   // };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
+  // const onFinishFailed = (errorInfo: any) => {
+  //   console.log('Failed:', errorInfo);
+  // };
 
 type Props = {}
 
 const ProductAdd = (props: ProductAddProps) => {
   const { register, handleSubmit, formState: { errors }} = useForm<TypeInputs>();
   const navigate = useNavigate();
-  const onSubmit: SubmitHandler<TypeInputs> = data => {
-      props.onAdd(data);
+  const [img, setImg] = useState();
+  useEffect(() => {
+    return () => {
+      img && URL.revokeObjectURL(img.preview);
+    }
+  }, [img])
+  const handlePreviewImage = (e: any) => {
+    const file = e.target.files[0];
+    file.preview = URL.createObjectURL(file);
+    setImg(file)
+  }
+  const onSubmit: SubmitHandler<TypeInputs> = async ( data ) => {
+    const CLOUDINARY_API = "https://api.cloudinary.com/v1_1/assignmentjs/image/upload";
+    const CLOUDINARY_PRESET = "imgproduct";
+    const file = data.img[0];
+    const formData = new FormData();
+          formData.append("file", file);
+          formData.append("upload_preset", CLOUDINARY_PRESET);
+
+          const response = await axios.post(CLOUDINARY_API, formData, {
+              headers: {
+                  "Content-Type": "application/form-data",
+              },
+          });
+    data.img = response.data.url;
+    const openNotification = () => {
+      notification.success({
+        message: `Thêm sản phẩm thành công !`,
+      });
+    };
+    props.onAdd(data);
+    openNotification();
+    setTimeout(() => {
       navigate("/admin/products");
+    }, 2000)
   }
   return (
   <div>
@@ -57,11 +91,11 @@ const ProductAdd = (props: ProductAddProps) => {
         <div className="shadow sm:rounded-md sm:overflow-hidden">
           <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-                Title
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                Name
               </label>
               <div className="mt-1">
-                <input type="text" {...register('name')} id="title-add-product" className="shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2" placeholder="Title..." />
+                <input type="text" {...register('name')} id="name-add-product" className="shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2" placeholder="Name..." />
               </div>
             </div>
             <div>
@@ -72,6 +106,16 @@ const ProductAdd = (props: ProductAddProps) => {
                 <input type="number" {...register('price')} id="price-add-product" className="shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2" placeholder="Price..." />
               </div>
             </div>
+                {img && (
+                        <div>
+                          <label htmlFor="imgpreview" className="block text-sm font-medium text-gray-700">
+                                Image Preview
+                              </label>
+                              <div className="mt-1">
+                                <img src={img.preview} className="w-[80%] rounded-[10px]"/>
+                              </div>
+                            </div>
+                )}
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Image
@@ -82,7 +126,7 @@ const ProductAdd = (props: ProductAddProps) => {
                     <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                   <div className="flex text-sm text-gray-600">
-                    <input id="file-upload" name="file-upload" type="file" />
+                    <input {...register('img')} onChange={handlePreviewImage} id="file-upload" type="file" />
                   </div>
                 </div>
               </div>

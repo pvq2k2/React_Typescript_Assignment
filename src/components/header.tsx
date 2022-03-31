@@ -24,7 +24,7 @@ const Header = (props: Props) => {
     </div>
     <div className="header-left flex">
       <div className="logo">
-        <Link to="/" target="_blank"><img src="https://i.postimg.cc/qtfvxTB5/logo.png" /></Link>
+        <Link to="/"><img src="https://i.postimg.cc/qtfvxTB5/logo.png" /></Link>
       </div>
     </div>
     <div className="search 
@@ -49,8 +49,8 @@ const Header = (props: Props) => {
         <div className="in-up--sub absolute top-12 bg-white shadow-xl z-20 p-3 rounded-lg invisible ease-linear duration-300 w-60 xl:left-[-15px] lg:right-[-96px]  group-hover:visible
         before:absolute before:-top-2 xl:before:left-5 before:lg:left-[120px]
         before:w-5 before:h-5 before:bg-white before:rounded before:rotate-45 before:-z-10  before:shadow-xl"><ul>
-            <li className="rounded-lg hover:bg-[#f26629] hover:text-white"><Link className="inline-block p-2" to="/signin">Đăng nhập</Link></li>
-            <li className="rounded-lg hover:bg-[#f26629] hover:text-white"><Link className="inline-block p-2" to="/signup">Đăng ký</Link></li>
+            <li className="rounded-lg hover:bg-[#f26629] hover:text-white"><Link className="inline-block p-2" to="/signin"><span className="text-black font-semibold">Đăng nhập</span></Link></li>
+            <li className="rounded-lg hover:bg-[#f26629] hover:text-white"><Link className="inline-block p-2" to="/signup"><span className="text-black font-semibold">Đăng ký</span></Link></li>
           </ul>
         </div>
       </div>

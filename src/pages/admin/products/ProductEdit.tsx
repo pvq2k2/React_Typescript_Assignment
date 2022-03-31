@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layout, Breadcrumb } from 'antd'
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, notification } from 'antd';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { read } from '../../../api/product';
+import axios from 'axios';
 
 type ProductEditProps = {
     onUpdate: (product: TypeInputs) => void
 };
 type TypeInputs = {
     name: string,
-    price: number
+    price: number,
+    img: string
 }
   // const onFinish = (values: any) => {
   //   console.log('Success:', values);
@@ -25,16 +27,53 @@ const ProductEdit = (props: ProductEditProps) => {
   const { register, handleSubmit, formState: { errors }, reset} = useForm<TypeInputs>();
   const { id } = useParams();
   const navigate = useNavigate();
+  const [products, setProducts] = useState();
   useEffect(() => {
     const getProduct = async () => {
       const { data } = await read(id);
       reset(data);
+      setProducts(data);
     }
     getProduct();
   }, [])
-  const onSubmit: SubmitHandler<TypeInputs> = data => { 
+  const [img, setImg] = useState();
+  useEffect(() => {
+    return () => {
+      img && URL.revokeObjectURL(img.preview);
+    }
+  }, [img])
+  const handlePreviewImage = (e: any) => {
+    const file = e.target.files[0];
+    file.preview = URL.createObjectURL(file);
+    setImg(file)
+  }
+  const onSubmit: SubmitHandler<TypeInputs> = async ( data ) => {
+    const CLOUDINARY_API = "https://api.cloudinary.com/v1_1/assignmentjs/image/upload";
+    const CLOUDINARY_PRESET = "imgproduct";
+    const file = data.img[0];
+
+    if (typeof(file) == "object") {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", CLOUDINARY_PRESET);
+
+    const response = await axios.post(CLOUDINARY_API, formData, {
+        headers: {
+            "Content-Type": "application/form-data",
+        },
+    });
+    data.img = response.data.url; 
+  }
+  const openNotification = () => {
+    notification.success({
+      message: `Sửa sản phẩm thành công !`,
+    });
+  };
       props.onUpdate(data);
-      navigate("/admin/products");
+      openNotification();
+      setTimeout(() => {
+        navigate("/admin/products");
+      }, 2000)
   }
   
   return (
@@ -65,11 +104,11 @@ const ProductEdit = (props: ProductEditProps) => {
         <div className="shadow sm:rounded-md sm:overflow-hidden">
           <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-                Title
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                Name
               </label>
               <div className="mt-1">
-                <input type="text" {...register('name')} id="title-edit-product" className="shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2" placeholder="Title..." defaultValue="${data.title}" />
+                <input type="text" {...register('name')} id="name-edit-product" className="shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2" placeholder="Name..." defaultValue="${data.title}" />
               </div>
             </div>
             <div>
@@ -80,32 +119,44 @@ const ProductEdit = (props: ProductEditProps) => {
                 <input type="number" {...register('price')} id="price-edit-product" className="shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2" placeholder="Price..." defaultValue="${data.price}" />
               </div>
             </div>
-            <div className="flex">
-              <div>
-                <label htmlFor="about" className="block text-sm font-medium text-gray-700">
-                  Current photo
-                </label>
-                <div className="mt-1">
-                  <img src="${data.img}" className="w-[80%] rounded-[10px]" />
-                </div>
+            <div className="flex justify-between">
+              {products && (
+                              <div>
+                              <label htmlFor="about" className="block text-sm font-medium text-gray-700">
+                                Current photo
+                              </label>
+                              <div className="mt-1">
+                                <img src={products.img} className="w-[80%] rounded-[10px]" />
+                              </div>
+                            </div>
+              )}
+              {img && (
+                        <div>
+                          <label htmlFor="imgpreview" className="block text-sm font-medium text-gray-700">
+                                Image Preview
+                              </label>
+                              <div className="mt-1">
+                                <img src={img.preview} className="w-[80%] rounded-[10px]"/>
+                              </div>
+                            </div>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Image
                 </label>
-                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 w-[1100px] border-gray-300 border-dashed rounded-md">
+                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                   <div className="space-y-1 text-center">
                     <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                       <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                     <div className="flex text-sm text-gray-600">
-                      <input id="file-upload" name="file-upload" type="file" />
+                      <input {...register('img')} onChange={handlePreviewImage} id="file-upload" type="file" />
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
           <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
             <button className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               <svg className="-ml-1 mr-2 h-5 w-5" x-description="Heroicon name: solid/check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

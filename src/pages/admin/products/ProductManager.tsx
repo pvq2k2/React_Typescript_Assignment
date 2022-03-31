@@ -10,6 +10,11 @@ type ProductManagerProps = {
 const ProductManager = (props: ProductManagerProps) => {
   const columns = [
     {
+      key: 'key',
+      title: 'STT',
+      dataIndex: 'key',
+    },
+    {
       key: 'name',
       title: 'Name',
       dataIndex: 'name',
@@ -18,6 +23,14 @@ const ProductManager = (props: ProductManagerProps) => {
       key: 'price',
       title: 'Price',
       dataIndex: 'price',
+    },
+    {
+      key: 'image',
+      title: 'Image',
+      dataIndex: 'img',
+      render: (img: string) => (
+        <img src={img} width={100}/>
+      )
     },
     {
       key: 'action',
@@ -36,6 +49,7 @@ const ProductManager = (props: ProductManagerProps) => {
       key: index + 1,
       name: item.name,
       price: item.price,
+      img: item.img,
       _id: item._id
     }
   })
