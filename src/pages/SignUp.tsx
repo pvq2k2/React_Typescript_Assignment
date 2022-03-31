@@ -1,11 +1,51 @@
+import axios from 'axios'
 import React from 'react'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
+import { signup } from '../api/auth'
 import Footer from '../components/Footer'
 import Header from '../components/header'
+import { notification } from 'antd';
 
-type Props = {}
 
-const SignUp = (props: Props) => {
+type TypeInputs = {
+  name: string,
+  email: string,
+  password: string,
+  avatar: string
+}
+
+const SignUp = () => {
+  const { register, handleSubmit, formState: { errors }} = useForm<TypeInputs>();
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<TypeInputs> = async ( data ) => {
+    const CLOUDINARY_API = "https://api.cloudinary.com/v1_1/assignmentjs/image/upload";
+    const CLOUDINARY_PRESET = "imguser";
+    const file = data.avatar[0];
+    console.log(file);
+    const formData = new FormData();
+          formData.append("file", file);
+          formData.append("upload_preset", CLOUDINARY_PRESET);
+
+          const response = await axios.post(CLOUDINARY_API, formData, {
+              headers: {
+                  "Content-Type": "application/form-data",
+              },
+          });
+    data.avatar = response.data.url;
+    const openNotification = () => {
+      notification.success({
+        message: `Tạo tài khoản thành công !`,
+      });
+    };
+    console.log(data);
+    signup(data);
+    openNotification();
+    setTimeout(() => {
+      navigate("/signin");
+    }, 2000)
+  } 
   return (
     <div>
         <Header />
@@ -25,24 +65,24 @@ const SignUp = (props: Props) => {
               Chú ý các nội dung có dấu * bạn cần phải nhập
             </p>
           </div>
-          <form className="mt-8 space-y-6" id="form-signup" action="#" method="POST">
+          <form className="mt-8 space-y-6" id="form-signup" action="#" method="POST" onSubmit={handleSubmit(onSubmit)}>
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded-md shadow-sm -space-y-px">
               <div className="pb-4">
                 <label htmlFor="input-username" className="py-2">Họ tên</label>
-                <input id="input-username" name="input-username" type="text" required className="appearance-none relative block w-full px-3 py-2 mt-1 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md ease-in-out duration-300 hover:border-[#f26629] focus:outline-none focus:ring-[#f26629] focus:border-[#f26629] focus:z-10 sm:text-sm" placeholder="Họ tên*" />
+                <input {...register('name')} id="input-username" type="text" required className="appearance-none relative block w-full px-3 py-2 mt-1 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md ease-in-out duration-300 hover:border-[#f26629] focus:outline-none focus:ring-[#f26629] focus:border-[#f26629] focus:z-10 sm:text-sm" placeholder="Họ tên*" />
               </div>
               <div className="pb-4">
                 <label htmlFor="input-password" className="py-2">Mật khẩu</label>
-                <input id="input-password" name="input-password" type="password" required className="appearance-none relative block w-full px-3 py-2 mt-1 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md ease-in-out duration-300 hover:border-[#f26629] focus:outline-none focus:ring-[#f26629] focus:border-[#f26629] focus:z-10 sm:text-sm" placeholder="Mật khẩu*" />
+                <input {...register('password')} id="input-password" type="password" required className="appearance-none relative block w-full px-3 py-2 mt-1 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md ease-in-out duration-300 hover:border-[#f26629] focus:outline-none focus:ring-[#f26629] focus:border-[#f26629] focus:z-10 sm:text-sm" placeholder="Mật khẩu*" />
               </div>
               <div className="pb-4">
                 <label htmlFor="input-email" className="py-2">Email</label>
-                <input id="input-email" name="input-email" type="email" required className="appearance-none relative block w-full px-3 py-2 mt-1 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md ease-in-out duration-300 hover:border-[#f26629] focus:outline-none focus:ring-[#f26629] focus:border-[#f26629] focus:z-10 sm:text-sm" placeholder="Email*" />
+                <input {...register('email')} id="input-email"  type="email" required className="appearance-none relative block w-full px-3 py-2 mt-1 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md ease-in-out duration-300 hover:border-[#f26629] focus:outline-none focus:ring-[#f26629] focus:border-[#f26629] focus:z-10 sm:text-sm" placeholder="Email*" />
               </div>
               <div className="mb-4">
                 <label htmlFor="input-avatar" className="py-2">Ảnh đại điện</label>
-                <input id="input-avatar" name="input-avatar" type="file" required className="appearance-none rounded-none relative block w-full px-3 py-2 mt-1 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md ease-in-out duration-300 hover:border-[#f26629] focus:outline-none focus:ring-[#f26629] focus:border-[#f26629] focus:z-10 sm:text-sm" placeholder="Ảnh đại diện" />
+                <input {...register('avatar')} id="input-avatar"  type="file" required className="appearance-none rounded-none relative block w-full px-3 py-2 mt-1 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md ease-in-out duration-300 hover:border-[#f26629] focus:outline-none focus:ring-[#f26629] focus:border-[#f26629] focus:z-10 sm:text-sm" placeholder="Ảnh đại diện" />
               </div>
             </div>
             <div>
@@ -60,7 +100,6 @@ const SignUp = (props: Props) => {
     </section>
   </div>
 </div>
-
         <Footer />
     </div>
 
