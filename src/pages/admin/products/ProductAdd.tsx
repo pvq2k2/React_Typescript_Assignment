@@ -112,7 +112,7 @@ const ProductAdd = (props: ProductAddProps) => {
                                 Image Preview
                               </label>
                               <div className="mt-1">
-                                <img src={img.preview} className="w-[80%] rounded-[10px]"/>
+                                <img src={img.preview} className="w-[200px] rounded-[10px]"/>
                               </div>
                             </div>
                 )}
