@@ -23,19 +23,8 @@ function App() {
      getProducts();
   }, []);
   const removeItem = (id: number | string) => {
-    const openNotification = () => {
-      notification.success({
-        message: `Xóa thành công !`,
-        // description:
-        //   'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-      });
-    };
-    const confirm = window.confirm('Are you sure you want to remove this item?');
-    if (confirm) {
       remove(id)
       setProducts(products.filter(item => item._id !== id));
-      openNotification()
-    }
   }
   const onHandleAdd = async (product: ProductType) => {
     const { data } = await add(product);

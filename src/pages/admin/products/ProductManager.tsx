@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Layout, Breadcrumb, Table, Button, Space, Modal } from 'antd';
+import { Layout, Breadcrumb, Table, Button, Space, message, Popconfirm, notification } from 'antd';
 import { ProductType } from '../../../types/product';
 import { Link } from 'react-router-dom';
 
@@ -7,7 +7,30 @@ type ProductManagerProps = {
   products: ProductType[];
   onRemove: (id: number | string) => void;
 }
+type ID = {
+  _id: number | string;
+}
 const ProductManager = (props: ProductManagerProps) => {
+  const [id, setId] = useState<ID>();
+  // console.log(id);
+  function confirm(e: any) {
+    // console.log(e);
+    const openNotification = () => {
+      notification.success({
+        message: `Xóa thành công !`,
+        // description:
+        //   'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+      });
+    };
+    // message.success('Click on Yes');
+    openNotification()
+    props.onRemove(id);
+  }
+  
+  function cancel(e: any) {
+    console.log(e);
+    message.error('Click on No');
+  }
   const columns = [
     {
       key: 'key',
@@ -36,10 +59,19 @@ const ProductManager = (props: ProductManagerProps) => {
       key: 'action',
       title: 'Action',
       dataIndex: '_id',
-      render: (_id: string | number) => (
+      render: (_id: ID) => (
         <Space size="middle">
         <Button type="primary" style={{ background: '#FFCC00', color: '#000000', border: 'none'}}><Link to={`/admin/products/${_id}/edit`}>Edit</Link></Button>
-        <Button type="primary" danger onClick={() => props.onRemove(_id)}>Remove</Button>
+        <Popconfirm
+        title="Bạn có muốn xóa sản phẩm này không ?"
+        onConfirm={confirm}
+        onCancel={cancel}
+        okText="Có"
+        cancelText="Không"
+        >
+        <Button type="primary" danger onClick={() => setId(_id)}>Remove</Button>
+        </Popconfirm>
+        {/* <Button type="primary" danger onClick={() => props.onRemove(_id)}>Remove</Button> */}
         </Space>
       )
     },
