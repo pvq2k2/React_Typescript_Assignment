@@ -12,6 +12,7 @@ import ProductEdit from './pages/admin/products/ProductEdit';
 import Home from './pages/Home';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import PrivateRouter from './components/PrivateRouter';
 function App() {
   const [products, setProducts] = useState<ProductType[]>([]);
   useEffect(() => {
@@ -50,13 +51,13 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/admin" element={<AdminLayout/>}>
-          <Route index element={<Dashboard />} />
-          <Route path="dashboard" element={<Dashboard />} />
+        <Route path="/admin" element={<PrivateRouter><AdminLayout/></PrivateRouter>}>
+          <Route index element={<PrivateRouter><Dashboard /></PrivateRouter>} />
+          <Route path="dashboard" element={<PrivateRouter><Dashboard /></PrivateRouter>} />
           <Route path='products'>
-            <Route index element={<ProductManager products={products} onRemove={removeItem}/>} />
-            <Route path='add' element={<ProductAdd onAdd={onHandleAdd}/>} />
-            <Route path=':id/edit' element={<ProductEdit onUpdate={onHandleUpdate}/>} />
+            <Route index element={<PrivateRouter><ProductManager products={products} onRemove={removeItem}/></PrivateRouter>} />
+            <Route path='add' element={<PrivateRouter><ProductAdd onAdd={onHandleAdd}/></PrivateRouter>} />
+            <Route path=':id/edit' element={<PrivateRouter><ProductEdit onUpdate={onHandleUpdate}/></PrivateRouter>} />
           </Route>
         </Route>
       </Routes>
