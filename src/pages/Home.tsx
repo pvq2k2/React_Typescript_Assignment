@@ -1,16 +1,17 @@
 import React from 'react'
+import Content from '../components/Content';
 import Footer from '../components/Footer';
 import Header from '../components/header';
 import Nav from '../components/Nav';
 import Sliders from '../components/Sliders';
-type Props = {}
 
-const Home = (props: Props) => {
+const Home = (props: any) => {
   return (
     <div>
       <Header />
       <Nav />
       <Sliders />
+      <Content getAllProducts={props.product}/>
       <Footer />
     </div>
       

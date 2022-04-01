@@ -46,9 +46,9 @@ function App() {
     setProducts(products.map(item => item._id == data._id ? data : item));
   }
   return (
-    <div className="App">
+    <div className="App bg-[#f4f4f4]">
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home product={products}/>} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/admin" element={<PrivateRouter><AdminLayout/></PrivateRouter>}>
