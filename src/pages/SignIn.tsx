@@ -1,11 +1,25 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { Link, useNavigate } from 'react-router-dom'
+import { signin } from '../api/auth'
 import Footer from '../components/Footer'
 import Header from '../components/header'
+import { authenticated } from '../utils/localStorage'
 
-type Props = {}
+type TypeInputs = {
+  email: string,
+  password: string
+}
 
-const SignIn = (props: Props) => {
+const SignIn = () => {
+  const { register, handleSubmit, formState: { errors }} = useForm<TypeInputs>();
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<TypeInputs> = async (data) => {
+    const {data : user} = await signin(data);
+    authenticated(user, () => {
+        navigate('/');
+    })
+  }
   return (
     <div>
     <Header />
@@ -22,16 +36,16 @@ const SignIn = (props: Props) => {
           <div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 uppercase">Đăng nhập</h2>
           </div>
-          <form className="mt-8 space-y-6" id="form-signin" action="#" method="POST">
+          <form className="mt-8 space-y-6" id="form-signin" action="#" method="POST" onSubmit={handleSubmit(onSubmit)}>
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded-md shadow-sm -space-y-px">
               <div className="mb-4">
                 <label htmlFor="input-email" className="py-2">Email</label>
-                <input id="input-email" name="input-email" type="email" required className="appearance-none rounded-none relative block w-full px-3 py-2 mt-1 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md ease-in-out duration-300 hover:border-[#f26629] focus:outline-none focus:ring-[#f26629] focus:border-[#f26629] focus:z-10 sm:text-sm" placeholder="Email" />
+                <input {...register('email')} id="input-email" type="email" required className="appearance-none rounded-none relative block w-full px-3 py-2 mt-1 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md ease-in-out duration-300 hover:border-[#f26629] focus:outline-none focus:ring-[#f26629] focus:border-[#f26629] focus:z-10 sm:text-sm" placeholder="Email" />
               </div>
               <div className="mb-4">
                 <label htmlFor="input-password" className="py-2">Mật khẩu</label>
-                <input id="input-password" name="input-password" type="password" required className="appearance-none rounded-none relative block w-full px-3 py-2 mt-1 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md ease-in-out duration-300 hover:border-[#f26629] focus:outline-none focus:ring-[#f26629] focus:border-[#f26629] focus:z-10 sm:text-sm" placeholder="Mật khẩu" />
+                <input {...register('password')} id="input-password" type="password" required className="appearance-none rounded-none relative block w-full px-3 py-2 mt-1 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md ease-in-out duration-300 hover:border-[#f26629] focus:outline-none focus:ring-[#f26629] focus:border-[#f26629] focus:z-10 sm:text-sm" placeholder="Mật khẩu" />
               </div>
             </div>
             <div className="flex items-center justify-between">
