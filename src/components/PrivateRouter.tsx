@@ -6,9 +6,9 @@ type PrivateRouterProps = {
 }
 
 const PrivateRouter = (props: PrivateRouterProps) => {
-    const isAuth = false;
+    const isAuth = true;
     if(!isAuth){
-        return <Navigate to="/login" />
+        return <Navigate to="/" />
     }
 
     return props.children
