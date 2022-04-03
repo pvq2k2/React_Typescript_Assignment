@@ -43,17 +43,17 @@ const CategoryManager = (props: CategoryManagerProps) => {
       dataIndex: 'name',
     },
     { 
-        key: 'id',
-        title: 'Id',
-        dataIndex: '_id',
+        key: 'slug',
+        title: 'Slug',
+        dataIndex: 'slug',
     },
     {
       key: 'icon',
       title: 'Icon',
       dataIndex: 'icon',
-      render: (icon: string) => {
-        {icon}
-      }
+      render: (icon: string) => (
+        <div>{icon}</div>
+      )
     },
     {
       key: 'action',

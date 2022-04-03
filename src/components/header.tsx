@@ -77,8 +77,8 @@ const Header = (props: Props) => {
           </div>
     )}
   <ul>
-    <li className="rounded-lg hover:bg-[#f26629] hover:text-white"><a className="inline-block p-2" href="/admin">Trang quản trị</a></li>
-    <li className="logout rounded-lg hover:bg-[#f26629] hover:text-white cursor-pointer" onClick={handlerLogout}><span className="inline-block p-2">Đăng xuất</span></li>
+    <li className="rounded-lg hover:bg-[#f26629] hover:text-white"><Link className="inline-block p-2" to="/admin"><span className="text-black font-semibold">Trang quản trị</span></Link></li>
+    <li className="logout rounded-lg hover:bg-[#f26629] cursor-pointer" onClick={handlerLogout}><span className="inline-block p-2 font-semibold">Đăng xuất</span></li>
   </ul>
 </div>
       ) : (

@@ -68,12 +68,12 @@ const ProductAdd = (props: ProductAddProps) => {
         message: `Thêm sản phẩm thành công !`,
       });
     };
-    // props.onAdd(data);
+    props.onAdd(data);
     console.log(data);
-    // openNotification();
-    // setTimeout(() => {
-    //   navigate("/admin/products");
-    // }, 2000)
+    openNotification();
+    setTimeout(() => {
+      navigate("/admin/products");
+    }, 2000)
   }
   return (
   <div>
