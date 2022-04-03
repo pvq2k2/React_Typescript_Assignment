@@ -5,7 +5,8 @@ import {
   HomeOutlined,
   ProfileOutlined,
   SettingOutlined,
-  BellOutlined
+  BellOutlined,
+  DropboxOutlined
 } from '@ant-design/icons';
 import { Link, Outlet } from 'react-router-dom';
 const { Header, Content, Footer, Sider } = Layout;
@@ -34,17 +35,20 @@ const AdminLayout = (props: Props) => {
         background: '#fff'
     }}>
       <Row className="logo" style={{ padding: '10px 0'}}>
-        <Image src="https://res.cloudinary.com/assignmentjs/image/upload/v1644248903/img/logoc_tixge3.png" width={50}/>
+        <img src="https://res.cloudinary.com/assignmentjs/image/upload/v1644248903/img/logoc_tixge3.png" width={50}/>
         <Title level={4} style={{ marginLeft: 10}}>Logo</Title>
       </Row>
       <Menu defaultSelectedKeys={['1']} mode="inline">
         <Menu.Item key="1" icon={<HomeOutlined />}>
           <Link to='dashboard'>Dashboard</Link>
         </Menu.Item>
-        <Menu.Item key="2" icon={<ProfileOutlined />}>
+        <Menu.Item key="2" icon={<DropboxOutlined />}>
           <Link to='products'>Products</Link>
         </Menu.Item>
-        <Menu.Item key="3" icon={<UserOutlined />}>
+        <Menu.Item key="3" icon={<ProfileOutlined />}>
+          <Link to='Category'>Category</Link>
+        </Menu.Item>
+        <Menu.Item key="4" icon={<UserOutlined />}>
           <Link to='products'>User</Link>
         </Menu.Item>
         {/* <SubMenu key="sub1" icon={<UserOutlined />} title="User">

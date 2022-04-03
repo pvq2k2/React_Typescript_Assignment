@@ -13,6 +13,9 @@ import Home from './pages/Home';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import PrivateRouter from './components/PrivateRouter';
+import CategoryManager from './pages/admin/category/CategoryManager';
+import { CategoryType } from './types/category';
+import { listCategory } from './api/category';
 function App() {
   const [products, setProducts] = useState<ProductType[]>([]);
   useEffect(() => {
@@ -22,6 +25,17 @@ function App() {
      }
      getProducts();
   }, []);
+  const [categorys, setCategorys] = useState<CategoryType[]>([]);
+  useEffect(() => {
+     const getCategorys = async () => {
+       const { data } = await listCategory();
+       setCategorys(data);
+     }
+     getCategorys();
+  }, []);
+  const onHandleRemoveCategory = (slug: string) => {
+    console.log(1)
+  }
   const removeItem = (id: number | string) => {
       remove(id)
       setProducts(products.filter(item => item._id !== id));
@@ -47,6 +61,9 @@ function App() {
             <Route index element={<PrivateRouter><ProductManager products={products} onRemove={removeItem}/></PrivateRouter>} />
             <Route path='add' element={<PrivateRouter><ProductAdd onAdd={onHandleAdd}/></PrivateRouter>} />
             <Route path=':id/edit' element={<PrivateRouter><ProductEdit onUpdate={onHandleUpdate}/></PrivateRouter>} />
+          </Route>
+          <Route path='category'>
+            <Route index element={<PrivateRouter><CategoryManager categorys={categorys} onRemove={onHandleRemoveCategory}/></PrivateRouter>} />
           </Route>
         </Route>
       </Routes>
