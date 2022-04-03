@@ -15,7 +15,7 @@ import SignUp from './pages/SignUp';
 import PrivateRouter from './components/PrivateRouter';
 import CategoryManager from './pages/admin/category/CategoryManager';
 import { CategoryType } from './types/category';
-import { addCategory, listCategory } from './api/category';
+import { addCategory, listCategory, removeCategory } from './api/category';
 import CategoryAdd from './pages/admin/category/CategoryAdd';
 function App() {
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -35,7 +35,8 @@ function App() {
      getCategorys();
   }, []);
   const onHandleRemoveCategory = (slug: string) => {
-    console.log(1)
+    removeCategory(slug)
+    setCategorys(categorys.filter(item => item.slug !== slug));
   }
   const onHandleAddCategory = async (category: CategoryType) => {
     const { data } = await addCategory(category);
