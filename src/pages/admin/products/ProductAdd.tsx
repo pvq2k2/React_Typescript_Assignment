@@ -4,6 +4,7 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { listCategory } from '../../../api/category';
 
 type ProductAddProps = {
     onAdd: (product: TypeInputs) => void
@@ -11,7 +12,8 @@ type ProductAddProps = {
 type TypeInputs = {
     name: string,
     price: number,
-    img: string
+    img: string,
+    category: string
 }
   // const onFinish = (values: any) => {
   //   console.log('Success:', values);
@@ -26,6 +28,14 @@ type Props = {}
 const ProductAdd = (props: ProductAddProps) => {
   const { register, handleSubmit, formState: { errors }} = useForm<TypeInputs>();
   const navigate = useNavigate();
+  const [categorys, setCategorys] = useState();
+  useEffect(() => {
+    const getCategory = async () => {
+      const { data } = await listCategory();
+      setCategorys(data);
+    }
+    getCategory();
+  }, [])
   const [img, setImg] = useState();
   useEffect(() => {
     return () => {
@@ -41,6 +51,7 @@ const ProductAdd = (props: ProductAddProps) => {
     const CLOUDINARY_API = "https://api.cloudinary.com/v1_1/assignmentjs/image/upload";
     const CLOUDINARY_PRESET = "imgproduct";
     const file = data.img[0];
+    if (file) {
     const formData = new FormData();
           formData.append("file", file);
           formData.append("upload_preset", CLOUDINARY_PRESET);
@@ -51,16 +62,18 @@ const ProductAdd = (props: ProductAddProps) => {
               },
           });
     data.img = response.data.url;
+    }
     const openNotification = () => {
       notification.success({
         message: `Thêm sản phẩm thành công !`,
       });
     };
-    props.onAdd(data);
-    openNotification();
-    setTimeout(() => {
-      navigate("/admin/products");
-    }, 2000)
+    // props.onAdd(data);
+    console.log(data);
+    // openNotification();
+    // setTimeout(() => {
+    //   navigate("/admin/products");
+    // }, 2000)
   }
   return (
   <div>
@@ -106,6 +119,16 @@ const ProductAdd = (props: ProductAddProps) => {
                 <input type="number" {...register('price')} id="price-add-product" className="shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2" placeholder="Price..." />
               </div>
             </div>
+            <div className="col-span-6 sm:col-span-3">
+              <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category</label>
+              <select {...register('category')} id="category" name="category" autoComplete="category-name" className="mt-1 block w-full py-2 px-3 appearance-none border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="0">Select Category</option>
+                {categorys && categorys.map((category: any, index: number) => (
+                  <option key={index + 1} value={category._id}>{category.name}</option>
+                ))}
+              </select>
+            </div>
+
                 {img && (
                         <div>
                           <label htmlFor="imgpreview" className="block text-sm font-medium text-gray-700">

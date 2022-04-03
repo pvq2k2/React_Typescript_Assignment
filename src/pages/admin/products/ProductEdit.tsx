@@ -5,6 +5,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { read } from '../../../api/product';
 import axios from 'axios';
+import { listCategory } from '../../../api/category';
 
 type ProductEditProps = {
     onUpdate: (product: TypeInputs) => void
@@ -12,7 +13,8 @@ type ProductEditProps = {
 type TypeInputs = {
     name: string,
     price: number,
-    img: string
+    img: string,
+    category: string
 }
   // const onFinish = (values: any) => {
   //   console.log('Success:', values);
@@ -27,6 +29,14 @@ const ProductEdit = (props: ProductEditProps) => {
   const { register, handleSubmit, formState: { errors }, reset} = useForm<TypeInputs>();
   const { id } = useParams();
   const navigate = useNavigate();
+  const [categorys, setCategorys] = useState();
+  useEffect(() => {
+    const getCategory = async () => {
+      const { data } = await listCategory();
+      setCategorys(data);
+    }
+    getCategory();
+  }, [])
   const [products, setProducts] = useState();
   useEffect(() => {
     const getProduct = async () => {
@@ -118,6 +128,14 @@ const ProductEdit = (props: ProductEditProps) => {
               <div className="mt-1">
                 <input type="number" {...register('price')} id="price-edit-product" className="shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2" placeholder="Price..." defaultValue="${data.price}" />
               </div>
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category</label>
+              <select {...register('category')} id="category" name="category" autoComplete="category-name" className="mt-1 block w-full py-2 px-3 appearance-none border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                {categorys && categorys.map((category: any, index: number) => (
+                  <option key={index + 1} value={category._id}>{category.name}</option>
+                ))}
+              </select>
             </div>
             <div className="flex justify-between">
               {products && (

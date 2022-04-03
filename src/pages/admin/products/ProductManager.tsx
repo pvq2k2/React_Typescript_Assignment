@@ -48,6 +48,11 @@ const ProductManager = (props: ProductManagerProps) => {
       dataIndex: 'price',
     },
     {
+      key: 'category',
+      title: 'Category',
+      dataIndex: 'category',
+    },
+    {
       key: 'image',
       title: 'Image',
       dataIndex: 'img',
@@ -81,6 +86,7 @@ const ProductManager = (props: ProductManagerProps) => {
       key: index + 1,
       name: item.name,
       price: item.price,
+      category: item.category,
       img: item.img,
       _id: item._id
     }
