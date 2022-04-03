@@ -12,8 +12,8 @@ const Content = (props: any) => {
   xl:grid-cols-5 
   lg:grid-cols-4 
   md:grid-cols-3">
-      {props.getAllProducts.map( (product: any) => (
-                <div className="product group shadow-2xl text-center rounded-xl p-4 hover:scale-110 ease-in-out duration-500">
+      {props.getAllProducts.map( (product: any, index: number) => (
+                <div className="product group shadow-2xl text-center rounded-xl p-4 hover:scale-110 ease-in-out duration-500" key={index + 1}>
                 <div className="product__img">
                   <img className="mx-auto" src={product.img} />
                 </div>

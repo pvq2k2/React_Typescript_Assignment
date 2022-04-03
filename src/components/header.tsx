@@ -1,9 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 type Props = {}
 
 const Header = (props: Props) => {
+  const [users, setUsers] = useState();
+  useEffect(() => {
+    if (localStorage.getItem('user')) {
+      const data = JSON.parse(localStorage.getItem('user') as string);
+      // console.log(data);
+      setUsers(data);
+    }
+  }, [])
+  const handlerLogout = () => {
+    localStorage.removeItem('user');
+  }
   return (
 <div>
     <div className="
@@ -48,13 +59,39 @@ const Header = (props: Props) => {
         </span>
         <div className="in-up--sub absolute top-12 bg-white shadow-xl z-20 p-3 rounded-lg invisible ease-linear duration-300 w-60 xl:left-[-15px] lg:right-[-96px]  group-hover:visible
         before:absolute before:-top-2 xl:before:left-5 before:lg:left-[120px]
-        before:w-5 before:h-5 before:bg-white before:rounded before:rotate-45 before:-z-10  before:shadow-xl"><ul>
+        before:w-5 before:h-5 before:bg-white before:rounded before:rotate-45 before:-z-10  before:shadow-xl">
+        {localStorage.getItem("user") ? (
+  <div>
+    {users && (
+      <div className="flex items-center pb-3 w-full">
+            <div className="flex-shrink-0 h-10 w-10">
+                        <img src={users.user.avatar} className="user-img h-10 w-10 rounded-full" />
+                      </div><div className="ml-4">
+                          <div className="text-sm text-gray-500">
+                            Xin chào !
+                          </div>
+                          <div>
+                            <span className="user-name text-sm font-medium text-gray-900">{users.user.name}</span>
+                          </div>
+                        </div>
+          </div>
+    )}
+  <ul>
+    <li className="rounded-lg hover:bg-[#f26629] hover:text-white"><a className="inline-block p-2" href="/admin">Trang quản trị</a></li>
+    <li className="logout rounded-lg hover:bg-[#f26629] hover:text-white cursor-pointer" onClick={handlerLogout}><span className="inline-block p-2">Đăng xuất</span></li>
+  </ul>
+</div>
+      ) : (
+<ul>
             <li className="rounded-lg hover:bg-[#f26629] hover:text-white"><Link className="inline-block p-2" to="/signin"><span className="text-black font-semibold">Đăng nhập</span></Link></li>
             <li className="rounded-lg hover:bg-[#f26629] hover:text-white"><Link className="inline-block p-2" to="/signup"><span className="text-black font-semibold">Đăng ký</span></Link></li>
           </ul>
-        </div>
+
+      )}
       </div>
-      <div className="check-order lg:block xl:block hidden">
+      </div>
+
+    <div className="check-order lg:block xl:block hidden">
         <Link to="#" className="text-gray-400 hover:text-[#f26629] ease-in-out duration-300">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
