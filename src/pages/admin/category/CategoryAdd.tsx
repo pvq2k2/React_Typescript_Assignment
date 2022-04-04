@@ -1,5 +1,5 @@
 import { Breadcrumb, notification } from 'antd';
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 type CategoryAddProps = {
@@ -14,6 +14,12 @@ type TypeInputs = {
 const CategoryAdd = (props: CategoryAddProps) => {
     const { register, handleSubmit, formState: { errors }} = useForm<TypeInputs>();
     const navigate = useNavigate();
+    const [icons, setIcons] = useState();
+    const handlePreviewIcon = (e : any) => {
+      console.log(e.target.value);
+      setIcons(e.target.value);
+      // console.log(icons);
+    }
     const onSubmit: SubmitHandler<TypeInputs> = async ( data ) => {
         const openNotification = () => {
           notification.success({
@@ -63,10 +69,22 @@ const CategoryAdd = (props: CategoryAddProps) => {
                 <input type="text" {...register('name')} id="name-add-product" className="shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2" placeholder="Name..." />
               </div>
             </div>
+            {icons && (
+                        <div>
+                          <label htmlFor="imgpreview" className="block text-sm font-medium text-gray-700">
+                              Icon Preview
+                              </label>
+                              <div className="mt-1">
+                              <img width={50} src={`data:image/svg+xml;utf8,${icons}`}></img>
+
+                                {/* <img src={img.preview} className="w-[80%] rounded-[10px]"/> */}
+                              </div>
+                            </div>
+            )}
             <div>
             <label htmlFor="icon" className="block text-sm font-medium text-gray-700"> Icon </label>
             <div className="mt-1">
-                <textarea id="icon" rows={3} className="pt-2 pl-2 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" placeholder="Icon" {...register('icon')} defaultValue={""} />
+                <textarea id="icon" rows={3} className="pt-2 pl-2 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" placeholder="Icon" {...register('icon')} defaultValue={""} onChange={handlePreviewIcon}/>
             </div>
             </div>
 
