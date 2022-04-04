@@ -46,7 +46,7 @@ const AdminLayout = (props: Props) => {
           <Link to='products'>Products</Link>
         </Menu.Item>
         <Menu.Item key="3" icon={<ProfileOutlined />}>
-          <Link to='Category'>Category</Link>
+          <Link to='category'>Category</Link>
         </Menu.Item>
         <Menu.Item key="4" icon={<UserOutlined />}>
           <Link to='products'>User</Link>

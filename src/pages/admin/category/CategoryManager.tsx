@@ -52,7 +52,12 @@ const CategoryManager = (props: CategoryManagerProps) => {
       title: 'Icon',
       dataIndex: 'icon',
       render: (icon: string) => (
-        <div>{icon}</div>
+        
+        <div>
+          {/* <img src={"data:image/svg+xml;base64,"+btoa({icon})}/> */}
+          <img width={30} src={`data:image/svg+xml;utf8,${icon}`}></img>
+          {/* {icon} */}
+        </div>
       )
     },
     {

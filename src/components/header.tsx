@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
+
 type Props = {}
 
 const Header = (props: Props) => {
@@ -8,12 +9,12 @@ const Header = (props: Props) => {
   useEffect(() => {
     if (localStorage.getItem('user')) {
       const data = JSON.parse(localStorage.getItem('user') as string);
-      // console.log(data);
       setUsers(data);
     }
   }, [])
   const handlerLogout = () => {
     localStorage.removeItem('user');
+    setUsers(undefined);
   }
   return (
 <div>
