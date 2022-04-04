@@ -35,8 +35,10 @@ const AdminLayout = (props: Props) => {
         background: '#fff'
     }}>
       <Row className="logo" style={{ padding: '10px 0'}}>
+        <Link to="/" className="flex">
         <img src="https://res.cloudinary.com/assignmentjs/image/upload/v1644248903/img/logoc_tixge3.png" width={50}/>
         <Title level={4} style={{ marginLeft: 10}}>Logo</Title>
+        </Link>
       </Row>
       <Menu defaultSelectedKeys={['1']} mode="inline">
         <Menu.Item key="1" icon={<HomeOutlined />}>

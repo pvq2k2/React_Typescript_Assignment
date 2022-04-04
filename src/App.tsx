@@ -18,6 +18,7 @@ import { CategoryType } from './types/category';
 import { addCategory, listCategory, removeCategory, updateCategory } from './api/category';
 import CategoryAdd from './pages/admin/category/CategoryAdd';
 import CategoryEdit from './pages/admin/category/CategoryEdit';
+import DetailCategory from './pages/DetailCategory';
 function App() {
   const [products, setProducts] = useState<ProductType[]>([]);
   useEffect(() => {
@@ -61,11 +62,12 @@ function App() {
     setProducts(products.map(item => item._id == data._id ? data : item));
   }
   return (
-    <div className="App bg-[#f4f4f4]">
+    <div className="App bg-[#f4f4f4] min-h-full">
       <Routes>
         <Route path="/" element={<Home product={products}/>} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/categorys/:slug" element={<DetailCategory />} />
         <Route path="/admin" element={<PrivateRouter><AdminLayout/></PrivateRouter>}>
           <Route index element={<PrivateRouter><Dashboard /></PrivateRouter>} />
           <Route path="dashboard" element={<PrivateRouter><Dashboard /></PrivateRouter>} />
