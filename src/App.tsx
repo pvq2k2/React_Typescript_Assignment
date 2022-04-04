@@ -15,8 +15,9 @@ import SignUp from './pages/SignUp';
 import PrivateRouter from './components/PrivateRouter';
 import CategoryManager from './pages/admin/category/CategoryManager';
 import { CategoryType } from './types/category';
-import { addCategory, listCategory, removeCategory } from './api/category';
+import { addCategory, listCategory, removeCategory, updateCategory } from './api/category';
 import CategoryAdd from './pages/admin/category/CategoryAdd';
+import CategoryEdit from './pages/admin/category/CategoryEdit';
 function App() {
   const [products, setProducts] = useState<ProductType[]>([]);
   useEffect(() => {
@@ -40,7 +41,11 @@ function App() {
   }
   const onHandleAddCategory = async (category: CategoryType) => {
     const { data } = await addCategory(category);
-    setProducts([...categorys, data]);
+    setCategorys([...categorys, data]);
+  }
+  const onHandleUpdateCategory = async (category: CategoryType) => {
+    const { data } = await updateCategory(category);
+    setCategorys(categorys.map(item => item.slug == data.slug ? data : item));
   }
   // Product
   const removeItem = (id: number | string) => {
@@ -72,6 +77,7 @@ function App() {
           <Route path='category'>
             <Route index element={<PrivateRouter><CategoryManager categorys={categorys} onRemove={onHandleRemoveCategory}/></PrivateRouter>} />
             <Route path='add' element={<PrivateRouter><CategoryAdd onAdd={onHandleAddCategory}/></PrivateRouter>} />
+            <Route path=":slug/edit" element={<PrivateRouter><CategoryEdit onUpdate={onHandleUpdateCategory}/></PrivateRouter>} />
           </Route>
         </Route>
       </Routes>
