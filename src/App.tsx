@@ -21,8 +21,9 @@ import CategoryEdit from './pages/admin/category/CategoryEdit';
 import DetailCategory from './pages/DetailCategory';
 import SliderManager from './pages/admin/sliders/SliderManager';
 import { SliderType } from './types/slider';
-import { addSlider, listSlider, removeSlider } from './api/slider';
+import { addSlider, listSlider, removeSlider, updateSlider } from './api/slider';
 import SliderAdd from './pages/admin/sliders/SliderAdd';
+import SliderEdit from './pages/admin/sliders/SliderEdit';
 function App() {
   const [products, setProducts] = useState<ProductType[]>([]);
   useEffect(() => {
@@ -83,6 +84,10 @@ function App() {
     const { data } = await addSlider(slider);
     setSliders([...sliders, data]);
   }
+  const onHandleUpdateSlider = async (slider: SliderType) => {
+    const { data } = await updateSlider(slider);
+    setSliders(sliders.map(item => item._id == data._id ? data : item));
+  }
   return (
     <div className="App bg-[#f4f4f4] min-h-full">
       <Routes>
@@ -106,6 +111,7 @@ function App() {
           <Route path="slider">
             <Route index element={<PrivateRouter><SliderManager sliders={sliders} onRemove={onHandleRemoveSlider}/></PrivateRouter>} />
             <Route path="add" element={<PrivateRouter><SliderAdd onAdd={onHandleAddSlider}/></PrivateRouter>} />
+            <Route path=":id/edit" element={<PrivateRouter><SliderEdit onUpdate={onHandleUpdateSlider}/></PrivateRouter>} />
           </Route>
         </Route>
       </Routes>
