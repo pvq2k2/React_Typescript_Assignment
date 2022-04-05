@@ -1,5 +1,6 @@
 import React from 'react'
 import { Carousel } from 'antd';
+import { Link } from 'react-router-dom';
 
 const SampleNextArrow = (props: any) => {
   const { className, style, onClick } = props
@@ -37,22 +38,19 @@ const settings = {
 }
 type Props = {}
 
-const Sliders = (props: Props) => {
+const Sliders = (props: any) => {
   return (
     <div className="box-slider
     xl:w-[1200px] xl:mx-auto xl:px-0
     px-3 mt-5 z-10">
-          <Carousel className="slider w-full group" autoplay arrows {...settings}>
-        <div className="slider-item">
-        <a href="#">
-            <img className="rounded-xl" src="https://res.cloudinary.com/assignmentjs/image/upload/v1644248754/imgslider/banner1_koj3i0.png" alt=""/>
-        </a>
-        </div>
-        <div className="slider-item">
-        <a href="#">
-            <img className="rounded-xl" src="https://res.cloudinary.com/assignmentjs/image/upload/v1644248755/imgslider/banner2_ulbpjm.png" alt=""/>
-        </a>
-        </div>
+  <Carousel className="slider w-full group" autoplay arrows {...settings}>
+    {props.getAllSliders.map((slider: any, index: number) => (
+      <div key={ index + 1 } className="slider-item">
+        <Link to="#">
+          <img className="rounded-xl" src={slider.img} alt=""/>
+        </Link>
+      </div>
+    ))}
   </Carousel>
     </div>
 

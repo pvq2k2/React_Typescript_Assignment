@@ -10,7 +10,7 @@ const Home = (props: any) => {
     <div>
       <Header />
       <Nav />
-      <Sliders />
+      <Sliders getAllSliders={props.slider}/>
       <Content getAllProducts={props.product}/>
       <Footer />
     </div>

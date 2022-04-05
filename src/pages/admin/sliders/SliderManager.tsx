@@ -36,9 +36,9 @@ const SliderManager = (props: SliderManagerProps) => {
       key: 'image',
       title: 'Image',
       dataIndex: 'img',
-      // render: (img: string) => (
-      //   <img src={img} width={100}/>
-      // )
+      render: (img: string) => (
+        <img src={img} width={600} className="rounded-xl"/>
+      )
     },
     {
       key: 'action',
