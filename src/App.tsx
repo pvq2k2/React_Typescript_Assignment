@@ -19,6 +19,9 @@ import { addCategory, listCategory, removeCategory, updateCategory } from './api
 import CategoryAdd from './pages/admin/category/CategoryAdd';
 import CategoryEdit from './pages/admin/category/CategoryEdit';
 import DetailCategory from './pages/DetailCategory';
+import SliderManager from './pages/admin/sliders/SliderManager';
+import { SliderType } from './types/slider';
+import { listSlider, removeSlider } from './api/slider';
 function App() {
   const [products, setProducts] = useState<ProductType[]>([]);
   useEffect(() => {
@@ -36,6 +39,15 @@ function App() {
      }
      getCategorys();
   }, []);
+  const [sliders, setSliders] = useState<SliderType[]>([]);
+  useEffect(() => {
+     const getSliders = async () => {
+       const { data } = await listSlider();
+       setSliders(data);
+     }
+     getSliders();
+  }, []);
+  //Category
   const onHandleRemoveCategory = (slug: string) => {
     removeCategory(slug)
     setCategorys(categorys.filter(item => item.slug !== slug));
@@ -61,6 +73,11 @@ function App() {
     const { data } = await update(product);
     setProducts(products.map(item => item._id == data._id ? data : item));
   }
+  // Sliders
+  const onHandleRemoveSlider = (id: number | string) => {
+    removeSlider(id)
+    setSliders(sliders.filter(item => item._id !== id));
+  }
   return (
     <div className="App bg-[#f4f4f4] min-h-full">
       <Routes>
@@ -80,6 +97,9 @@ function App() {
             <Route index element={<PrivateRouter><CategoryManager categorys={categorys} onRemove={onHandleRemoveCategory}/></PrivateRouter>} />
             <Route path='add' element={<PrivateRouter><CategoryAdd onAdd={onHandleAddCategory}/></PrivateRouter>} />
             <Route path=":slug/edit" element={<PrivateRouter><CategoryEdit onUpdate={onHandleUpdateCategory}/></PrivateRouter>} />
+          </Route>
+          <Route path="slider">
+            <Route index element={<PrivateRouter><SliderManager sliders={sliders} onRemove={onHandleRemoveSlider}/></PrivateRouter>} />
           </Route>
         </Route>
       </Routes>

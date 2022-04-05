@@ -6,7 +6,8 @@ import {
   ProfileOutlined,
   SettingOutlined,
   BellOutlined,
-  DropboxOutlined
+  DropboxOutlined,
+  PictureOutlined
 } from '@ant-design/icons';
 import { Link, Outlet } from 'react-router-dom';
 const { Header, Content, Footer, Sider } = Layout;
@@ -50,7 +51,10 @@ const AdminLayout = (props: Props) => {
         <Menu.Item key="3" icon={<ProfileOutlined />}>
           <Link to='category'>Category</Link>
         </Menu.Item>
-        <Menu.Item key="4" icon={<UserOutlined />}>
+        <Menu.Item key="4" icon={<PictureOutlined />}>
+          <Link to='slider'>Slider</Link>
+        </Menu.Item>
+        <Menu.Item key="5" icon={<UserOutlined />}>
           <Link to='products'>User</Link>
         </Menu.Item>
         {/* <SubMenu key="sub1" icon={<UserOutlined />} title="User">
