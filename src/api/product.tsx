@@ -6,7 +6,11 @@ export const list = () => {
     return instance.get(url);
 }
 export const read = (id: number | string) => {
-    const url = `/product/${id}`;
+    const url = `/products/${id}`;
+    return instance.get(url);
+}
+export const readOneProduct = (slug: string) => {
+    const url = `/product/${slug}`;
     return instance.get(url);
 }
 export const remove = (id: number | string) => {

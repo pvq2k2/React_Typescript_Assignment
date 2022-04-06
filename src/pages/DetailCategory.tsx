@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 import { readOneCategory } from '../api/category'
 import Footer from '../components/Footer'
 import Header from '../components/header'
@@ -35,6 +35,7 @@ const DetailCategory = (props: Props) => {
   lg:grid-cols-4 
   md:grid-cols-3">
       {products.map( (item: any, index: number) => (
+        <NavLink to={`products/${item.slug}`}>
                 <div className="product group shadow-2xl text-center rounded-xl p-4 hover:scale-110 ease-in-out duration-500" key={index + 1}>
                 <div className="product__img">
                   <img className="mx-auto" src={item.img} />
@@ -45,11 +46,8 @@ const DetailCategory = (props: Props) => {
                 <div className="product__price mb-3">
                   <strong className="text-base text-[#fd475a]">{item.price} ₫</strong>
                 </div>
-                <div className="product__btn">
-                  <button data-id="${id}" className="buy-btn mx-3 inline-block bg-[#f26629] px-5 py-2 uppercase text-white font-semibold rounded-lg hover:bg-[#30a2e1] ease-in duration-300">Mua
-                    Ngay</button>
-                </div>
      </div>
+     </NavLink>
       ))}
     </div>
   </section>

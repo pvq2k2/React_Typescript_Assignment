@@ -24,6 +24,7 @@ import { SliderType } from './types/slider';
 import { addSlider, listSlider, removeSlider, updateSlider } from './api/slider';
 import SliderAdd from './pages/admin/sliders/SliderAdd';
 import SliderEdit from './pages/admin/sliders/SliderEdit';
+import DetailProduct from './pages/DetailProduct';
 function App() {
   const [products, setProducts] = useState<ProductType[]>([]);
   useEffect(() => {
@@ -95,6 +96,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/categorys/:slug" element={<DetailCategory />} />
+        <Route path="/categorys/:slug/products/:slug" element={<DetailProduct />} />
         <Route path="/admin" element={<PrivateRouter><AdminLayout/></PrivateRouter>}>
           <Route index element={<PrivateRouter><Dashboard /></PrivateRouter>} />
           <Route path="dashboard" element={<PrivateRouter><Dashboard /></PrivateRouter>} />
