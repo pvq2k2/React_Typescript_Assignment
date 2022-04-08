@@ -13,6 +13,7 @@ const DetailProduct = (props: Props) => {
     const { slug } = useParams();
     const [products, setProducts] = useState();
     const [categorys, setCategorys] = useState();
+    const [quantitys, setQuantitys] = useState<Number>();
     useEffect(() => {
         const getProduct =  async () => {
             const { data } = await readOneProduct(slug);
@@ -39,10 +40,26 @@ const DetailProduct = (props: Props) => {
                 //     setCategorys(data[i]);
                 // }
             
-            
         }
         getCategory();
-    }, [categorys])
+    }, [])
+    
+    // const upQuantity = () => {
+    //   setQuantitys(quantitys++);
+    //   // quantitys = quantitys + 1;
+      
+    // }
+    // const downQuantity = () => {
+    //   let dQuantity = quantitys == 1 ? quantitys = 1 : quantitys--;
+    //   setQuantitys(dQuantity);
+      
+    // }
+    // const inputQuantity = (e: any) => {
+    //   // console.log(e.target.value);
+    //   setQuantitys(e.target.value);
+    //   console.log(quantitys);
+      
+    // }
   return (
     <div>
     <Header />
@@ -60,38 +77,22 @@ const DetailProduct = (props: Props) => {
     <Breadcrumb.Item>{products && products.name}</Breadcrumb.Item>
   </Breadcrumb>
   {products &&  (
-                <div className="product w-full shadow-2xl text-center rounded-xl p-4 bg-white">
-                <div className="product__img">
-                  <img className="mx-auto" src={products.img} />
-                </div>
+
+                <div className="product w-full shadow-2xl rounded-xl p-4 bg-white">
                 <div className="product__name">
-                  <h4 className="font-bold text-base py-2 group-hover:text-[#f26629] ease-in duration-300">{products.name}</h4>
+                  <h4 className="font-bold text-center text-2xl py-3 pl-4 group-hover:text-[#f26629] ease-in duration-300">{products.name}</h4>
                 </div>
+                <div className="flex justify-center gap-20">
+                <div className="product__img">
+                  <img className="w-[200px]" src={products.img} />
+                </div>
+                <div className="pl-5">
                 <div className="product__price mb-3">
-                  <strong className="text-base text-[#fd475a]">{products.price} ₫</strong>
-                </div>
-                <section aria-labelledby="options-heading" className="mt-5">
-              <form>
-                {/* Quantity */}
-                <div>
-                  <h4 className="text-sm text-gray-900 font-medium">Số lượng</h4>
-                  <div className="flex items-center mt-2">
-                    <button id="down-quantity" className="cursor-pointer flex items-center justify-center outline-none border w-8 h-8 text-[rgba(0,0,0,.8)]">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-                      </svg>
-                    </button>
-                    <input id="input-quantity" type="text" role="spinbutton" aria-valuenow={1} defaultValue={1} className="border w-14 h-8 text-base font-normal box-border text-center cursor-text outline-none" />
-                    <button id="up-quantity" className="cursor-pointer flex items-center justify-center outline-none border w-8 h-8 text-[rgba(0,0,0,.8)]">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                      </svg>
-                    </button>
-                  </div>
+                  <strong className="text-2xl text-[#fd475a]">{products.price} ₫</strong>
                 </div>
                 <button id="btn-add-to-cart" className="mt-6 w-full bg-[#f26629] border border-transparent rounded-md py-3 px-8 flex items-center ease-in duration-300 justify-center text-base font-medium text-white hover:bg-[#30a2e1] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Thêm vào giỏ hàng</button>
-              </form>
-            </section>
+          </div>
+        </div>
      </div>
      )}
   </section>

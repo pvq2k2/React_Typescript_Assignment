@@ -102,7 +102,7 @@ function App() {
           <Route path="dashboard" element={<PrivateRouter><Dashboard /></PrivateRouter>} />
           <Route path='products'>
             <Route index element={<PrivateRouter><ProductManager products={products} onRemove={removeItem}/></PrivateRouter>} />
-            <Route path='add' element={<PrivateRouter><ProductAdd onAdd={onHandleAdd}/></PrivateRouter>} />
+            <Route path='add/:userId' element={<PrivateRouter><ProductAdd onAdd={onHandleAdd}/></PrivateRouter>} />
             <Route path=':id/edit' element={<PrivateRouter><ProductEdit onUpdate={onHandleUpdate}/></PrivateRouter>} />
           </Route>
           <Route path='category'>
