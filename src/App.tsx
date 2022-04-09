@@ -96,14 +96,14 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/categorys/:slug" element={<DetailCategory />} />
-        <Route path="/categorys/:slug/products/:slug" element={<DetailProduct />} />
+        <Route path="products/:slug" element={<DetailProduct />} />
         <Route path="/admin" element={<PrivateRouter><AdminLayout/></PrivateRouter>}>
           <Route index element={<PrivateRouter><Dashboard /></PrivateRouter>} />
           <Route path="dashboard" element={<PrivateRouter><Dashboard /></PrivateRouter>} />
           <Route path='products'>
             <Route index element={<PrivateRouter><ProductManager products={products} onRemove={removeItem}/></PrivateRouter>} />
             <Route path='add/:userId' element={<PrivateRouter><ProductAdd onAdd={onHandleAdd}/></PrivateRouter>} />
-            <Route path=':id/edit' element={<PrivateRouter><ProductEdit onUpdate={onHandleUpdate}/></PrivateRouter>} />
+            <Route path=':id/:userId' element={<PrivateRouter><ProductEdit onUpdate={onHandleUpdate}/></PrivateRouter>} />
           </Route>
           <Route path='category'>
             <Route index element={<PrivateRouter><CategoryManager categorys={categorys} onRemove={onHandleRemoveCategory}/></PrivateRouter>} />

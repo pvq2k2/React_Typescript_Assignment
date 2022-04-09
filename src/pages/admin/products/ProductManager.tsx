@@ -68,7 +68,7 @@ const ProductManager = (props: ProductManagerProps) => {
       dataIndex: '_id',
       render: (_id: ID) => (
         <Space size="middle">
-        <Button type="primary" style={{ background: '#FFCC00', color: '#000000', border: 'none'}}><Link to={`/admin/products/${_id}/edit`}>Edit</Link></Button>
+        <Button type="primary" style={{ background: '#FFCC00', color: '#000000', border: 'none'}}><Link to={`/admin/products/${_id}/${user._id}`}>Edit</Link></Button>
         <Popconfirm
         title="Bạn có muốn xóa sản phẩm này không ?"
         onConfirm={confirm}

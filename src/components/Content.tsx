@@ -7,14 +7,14 @@ const Content = (props: any) => {
 <main className="px-3 xl:w-[1200px] xl:mx-auto xl:px-0">
   <section className="content py-5">
     <div className="category inline-block overflow-hidden">
-      <h4 className="bg-[#f26629] py-1 px-5 uppercase text-white font-semibold rounded-md">Điện Thoại</h4>
+      <h4 className="bg-[#f26629] py-1 px-5 uppercase text-white font-semibold rounded-md">Product</h4>
     </div>
     <div className="list-products grid gap-8 mt-5 grid-cols-2 
   xl:grid-cols-5 
   lg:grid-cols-4 
   md:grid-cols-3">
       {props.getAllProducts.map( (product: any, index: number) => (
-        <NavLink to={`categorys/:slug/products/${product.slug}`}>
+        <NavLink key={index + 1} to={`products/${product.slug}`}>
                 <div className="product group shadow-2xl text-center rounded-xl p-4 hover:scale-110 ease-in-out duration-500" key={index + 1}>
                 <div className="product__img">
                   <img className="mx-auto" src={product.img} />
