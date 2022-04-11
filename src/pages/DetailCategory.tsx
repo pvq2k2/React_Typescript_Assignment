@@ -35,7 +35,7 @@ const DetailCategory = (props: Props) => {
   lg:grid-cols-4 
   md:grid-cols-3">
       {products.map( (item: any, index: number) => (
-        <NavLink to={`products/${item.slug}`}>
+        <NavLink to={`/products/${item.slug}`}>
                 <div className="product group shadow-2xl text-center rounded-xl p-4 hover:scale-110 ease-in-out duration-500" key={index + 1}>
                 <div className="product__img">
                   <img className="mx-auto" src={item.img} />

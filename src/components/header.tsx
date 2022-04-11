@@ -1,21 +1,38 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-
+import { Drawer, Button } from 'antd';
+import { ProductType } from '../types/product';
+import { increaseQuantity, decreaseQuantity } from '../utils/localStorage';
 
 type Props = {}
 
-const Header = (props: Props) => {
+const Header: React.FC = (props: Props) => {
   const [users, setUsers] = useState();
+  const [carts, setCarts] = useState();
   useEffect(() => {
     if (localStorage.getItem('user')) {
       const data = JSON.parse(localStorage.getItem('user') as string);
       setUsers(data);
     }
   }, [])
+  useEffect(() => {
+    if (localStorage.getItem("cart")) setCarts(JSON.parse(localStorage.getItem("cart") as string))
+  }, [])
   const handlerLogout = () => {
     localStorage.removeItem('user');
     setUsers(undefined);
   }
+
+
+  console.log(carts);
+  
+  const [visible, setVisible] = useState(false);
+  const showDrawer = () => {
+    setVisible(true);
+  };
+  const onClose = () => {
+    setVisible(false);
+  };
   return (
 <div>
     <div className="
@@ -101,12 +118,51 @@ const Header = (props: Props) => {
         </Link>
       </div>
       <div className="cart">
-        <Link to="/cart" className="text-gray-400 hover:text-[#f26629] ease-in-out duration-300">
+        <div onClick={showDrawer} className="text-gray-400 hover:text-[#f26629] ease-in-out duration-300">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
           </svg>
-        </Link>
+        </div>
       </div>
+      <Drawer width={480} title="Cart" placement="right" onClose={onClose} visible={visible}>
+
+            {carts?.map((item: ProductType, index: number) => (
+              <div key={index + 1} className="modal-container py-5 w-full grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">
+              <div className="aspect-w-2 aspect-h-3 rounded-lg overflow-hidden sm:col-span-4 lg:col-span-5">
+                <img src={item.img} alt="Img" className="modal-img object-center object-cover m-auto" />
+              </div>
+              <div className="sm:col-span-8 lg:col-span-7">
+                <h2 className="modal-title text-xl font-extrabold text-gray-900 sm:pr-12">{item.name}</h2>
+            
+                <section aria-labelledby="options-heading" className="mt-5">
+                    {/* Quantity */}
+                    <div>
+                      <h4 className="text-sm text-gray-900 font-medium">Số lượng</h4>
+                      <div className="flex items-center mt-2">
+                        <button onClick={() => increaseQuantity} id="down-quantity" className="cursor-pointer flex items-center justify-center outline-none border w-8 h-8 text-[rgba(0,0,0,.8)]">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                          </svg>
+                        </button>
+                        <span className="border w-14 h-8 text-base font-normal box-border text-center leading-7">{item.quantity}</span>
+                        {/* <input id="input-quantity" type="text" role="spinbutton" aria-valuenow={1} defaultValue={1} className="border w-14 h-8 text-base font-normal box-border text-center cursor-text outline-none" /> */}
+                        <button onClick={() => decreaseQuantity} id="up-quantity" className="cursor-pointer flex items-center justify-center outline-none border w-8 h-8 text-[rgba(0,0,0,.8)]">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <section aria-labelledby="information-heading" className="my-3 mr-2">
+                  {/* <p className="modal-price text-2xl text-[#fd475a]">{item.price}</p> */}
+                  <p>Price: {item.price}</p>
+                  <span>Total: {item.price * item.quantity}</span>
+                  </section>
+                </section>
+              </div>
+            </div>
+            ))}
+          </Drawer>
     </div>
   </div>
 </div>

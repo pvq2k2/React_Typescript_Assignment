@@ -25,10 +25,10 @@ const Content = (props: any) => {
                 <div className="product__price mb-3">
                   <strong className="text-base text-[#fd475a]">{product.price} ₫</strong>
                 </div>
-                <div className="product__btn">
+                {/* <div className="product__btn">
                   <button data-id="${id}" className="buy-btn mx-3 inline-block bg-[#f26629] px-5 py-2 uppercase text-white font-semibold rounded-lg hover:bg-[#30a2e1] ease-in duration-300">Mua
                     Ngay</button>
-                </div>
+                </div> */}
      </div>
      </NavLink>
       ))}

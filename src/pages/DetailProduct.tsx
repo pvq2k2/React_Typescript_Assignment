@@ -6,13 +6,16 @@ import { readOneProduct } from "../api/product";
 import Footer from '../components/Footer';
 import Header from '../components/header';
 import Nav from '../components/Nav';
+import { ProductType } from '../types/product';
+import { addToCart } from '../utils/localStorage';
 
 type Props = {}
 
 const DetailProduct = (props: Props) => {
     const { slug } = useParams();
-    const [products, setProducts] = useState();
-    const [categorys, setCategorys] = useState();
+    const [products, setProducts] = useState<ProductType[]>([]);
+    const [carts, setCarts] = useState();
+    // const [categorys, setCategorys] = useState();
     const [quantitys, setQuantitys] = useState<Number>();
     useEffect(() => {
         const getProduct =  async () => {
@@ -21,28 +24,28 @@ const DetailProduct = (props: Props) => {
         }
         getProduct();
     }, [])
-    useEffect(() => {
-        const getCategory = async () => {
-            const { data } = await listCategory();
-            // console.log(data[0]);
-            // console.log(data[0]._id);
-            // console.log(products.category);
+    // useEffect(() => {
+    //     const getCategory = async () => {
+    //         const { data } = await listCategory();
+    //         // console.log(data[0]);
+    //         // console.log(data[0]._id);
+    //         // console.log(products.category);
 
-            for (let i = 0; i < data.length; i++) {
-            if (products) {
-                if (products.category === data[i]._id) {
-                    setCategorys(data[i]);
-                }
-            }
+    //         for (let i = 0; i < data.length; i++) {
+    //         if (products) {
+    //             if (products.category === data[i]._id) {
+    //                 setCategorys(data[i]);
+    //             }
+    //         }
 
-            }
-                // if (data[i]._id === products._id){
-                //     setCategorys(data[i]);
-                // }
+    //         }
+    //             // if (data[i]._id === products._id){
+    //             //     setCategorys(data[i]);
+    //             // }
             
-        }
-        getCategory();
-    }, [])
+    //     }
+    //     getCategory();
+    // }, [])
     
     // const upQuantity = () => {
     //   setQuantitys(quantitys++);
@@ -60,6 +63,17 @@ const DetailProduct = (props: Props) => {
     //   console.log(quantitys);
       
     // }
+    const handlerAddToCart = () => {
+    let quantity: number = products.quantity;
+    // setQuantitys(quantity);
+    // console.log(quantity);
+    
+      addToCart({...products}, () => {
+        // toastr.success("Add product successfully!");
+        // reRender(HomePage, "#app");
+    });
+      
+    }
   return (
     <div>
     <Header />
@@ -71,9 +85,9 @@ const DetailProduct = (props: Props) => {
     </div> */}
     <Breadcrumb style={{ margin: '16px' }}>
     <Breadcrumb.Item><Link to="/">Home</Link></Breadcrumb.Item>
-    {categorys && (
+    {/* {categorys && (
         <Breadcrumb.Item><Link to={`/categorys/${categorys.slug}`}>{categorys.name}</Link></Breadcrumb.Item>
-    )}
+    )} */}
     <Breadcrumb.Item>{products && products.name}</Breadcrumb.Item>
   </Breadcrumb>
   {products &&  (
@@ -90,7 +104,7 @@ const DetailProduct = (props: Props) => {
                 <div className="product__price mb-3">
                   <strong className="text-2xl text-[#fd475a]">{products.price} ₫</strong>
                 </div>
-                <button id="btn-add-to-cart" className="mt-6 w-full bg-[#f26629] border border-transparent rounded-md py-3 px-8 flex items-center ease-in duration-300 justify-center text-base font-medium text-white hover:bg-[#30a2e1] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Thêm vào giỏ hàng</button>
+                <button id="btn-add-to-cart" className="mt-6 w-full bg-[#f26629] border border-transparent rounded-md py-3 px-8 flex items-center ease-in duration-300 justify-center text-base font-medium text-white hover:bg-[#30a2e1] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={handlerAddToCart}>Thêm vào giỏ hàng</button>
           </div>
         </div>
      </div>
