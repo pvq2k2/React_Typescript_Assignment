@@ -6,7 +6,7 @@ FE repository : [https://github.com/pvq2k2/Van-Quyet-Mobile-React_Typescript.git
 
 ## Built With
 
-- ReactJS
+- ReactJS (Typescript)
 - NodeJS
 - Express
 - MongoDB
